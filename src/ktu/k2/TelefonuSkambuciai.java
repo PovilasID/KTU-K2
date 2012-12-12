@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ktu.k2;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  *
@@ -16,22 +12,22 @@ import java.util.Map;
  */
 public class TelefonuSkambuciai {
     
-    ArrayList<Skambuciai> isklotine = new ArrayList<Skambuciai>();
-    ArrayList<Skambuciai> daline = new ArrayList<Skambuciai>();
+    LinkedList<Skambuciai> isklotine = new LinkedList<Skambuciai>();
+    LinkedList<Skambuciai> daline = new LinkedList<Skambuciai>();
     
     PrintStream out = System.out;
     
-    public void brangiausiSkambuciai(double skambucioKaina){
+    public void skambuciaiIMiesta(String miestas){
         for(Skambuciai s : isklotine){
-            if(s.getSkambucioKaina() > skambucioKaina){
+            if(s.getMiestasKurSkambinta().equals(miestas)){
                 daline.add(s);
             }
         }
     }
     
-    public void rusiuotiPagalMiestus(){
+    public void rusiuotiPagalMinutesKaina(){
         Object [] isvedimui = isklotine.toArray();
-        Arrays.sort(isvedimui, Skambuciai.pagalMiestus);
+        Arrays.sort(isvedimui, Skambuciai.pagalKaina);
         
         out.println("\n *-------------------Miestai is eiles-----------------*");
         for(int i = 0; i < isvedimui.length; i++ ){
@@ -39,8 +35,8 @@ public class TelefonuSkambuciai {
         }
     }
     
-    public void miestuApkrovimas(){
-        Map<String, Integer> stat = new HashMap<String, Integer>();
+    public void abonentuApkrovimas(){
+        Map<String, Integer> stat = new TreeMap<String, Integer>();
         for(Skambuciai s : isklotine){
             if(stat.containsKey(s.getMiestasKurSkambinta())){
                 stat.put(s.getMiestasKurSkambinta(), 
@@ -65,9 +61,10 @@ public class TelefonuSkambuciai {
         isklotine.add(new Skambuciai("868611111", "Trakai", 10, 0.23));
         isklotine.add(new Skambuciai("868612322", "Kaunas", 7, 0.6));
         
-        brangiausiSkambuciai(5);
-        rusiuotiPagalMiestus();
-        miestuApkrovimas();
+        skambuciaiIMiesta("Kaunas");
+                
+        rusiuotiPagalMinutesKaina();
+        abonentuApkrovimas();
     
     }
     public static void main(String[] args) {
